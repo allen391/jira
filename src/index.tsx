@@ -3,10 +3,11 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { ProjectListScreen } from "./screens/project-list";
+import LoginScreen from "./screens/login";
 
 ReactDOM.render(
   <React.StrictMode>
-    <ProjectListScreen />
+    <LoginScreen />
   </React.StrictMode>,
   document.getElementById("root")
 );
