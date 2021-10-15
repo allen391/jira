@@ -1,15 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import { ProjectListScreen } from "./screens/project-list";
-import LoginScreen from "./screens/login";
 import { loadDevTools } from "jira-dev-tool";
+import { AppProvider } from "context";
+import App from "./App";
 
 loadDevTools(() => {
   ReactDOM.render(
     <React.StrictMode>
-      <LoginScreen />
+      <AppProvider>
+        <App />
+      </AppProvider>
     </React.StrictMode>,
     document.getElementById("root")
   );
