@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import reportWebVitals from "./reportWebVitals";
 import { loadDevTools } from "jira-dev-tool";
+import "antd/dist/antd.less";
 import { AppProvider } from "context";
 import App from "./App";
 
