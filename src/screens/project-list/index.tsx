@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { SearchPanel } from "screens/project-list/search-panel";
 import { List } from "screens/project-list/list";
-import { useDebounce } from "../../utils";
+import { useDebounce, useDocumentTitle } from "../../utils";
 import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { useProjects } from "../../utils/project";
@@ -11,6 +11,7 @@ import { useUser } from "../../utils/user";
 // 我们希望，在静态代码中，就能找到其中的一些错误 -> 强类型
 
 export const ProjectListScreen = () => {
+  useDocumentTitle("Project List", false);
   const [param, setParam] = useState({
     name: "",
     personId: "",
