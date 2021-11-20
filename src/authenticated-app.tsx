@@ -4,14 +4,26 @@ import { useAuth } from "./context/auth-context";
 import styled from "@emotion/styled";
 import { Row } from "components/lib";
 import { ReactComponent as SoftwareLogo } from "assets/software-logo.svg";
-import { Dropdown, Menu, Button } from "antd";
+import { Button, Dropdown, Menu } from "antd";
+import { Route, Routes } from "react-router";
+import { BrowserRouter as Router } from "react-router-dom";
+import { ProjectScreen } from "./screens/Project";
 
 export const AuthenticatedApp = () => {
   return (
     <Container>
       <PageHeader />
       <Main>
-        <ProjectListScreen />
+        <Router>
+          <Routes>
+            <Route path={"/projects"} element={<ProjectListScreen />} />
+            <Route
+              path={"/projects/:projectId/*"}
+              element={<ProjectScreen />}
+            />
+            <Route index element={<ProjectListScreen />} />
+          </Routes>
+        </Router>
       </Main>
     </Container>
   );
