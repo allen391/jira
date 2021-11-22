@@ -1,14 +1,16 @@
 /*
  * 返回页面url中，指定键的参数值
  * */
-import { useSearchParams } from "react-router-dom";
+import { URLSearchParamsInit, useSearchParams } from "react-router-dom";
 import { useMemo } from "react";
+import { cleanObject } from "./index";
 
 //array 转成 obj
 //'as Const'一般解决数组中类型不一致的问题
 
 export const useUrlQueryParams = <K extends string>(keys: K[]) => {
   const [searchParams, setSearchParam] = useSearchParams();
+
   return [
     useMemo(
       () =>
@@ -17,6 +19,12 @@ export const useUrlQueryParams = <K extends string>(keys: K[]) => {
         }, {} as { [key in K]: string }),
       [searchParams]
     ),
-    setSearchParam,
+    (params: Partial<{ [key in K]: unknown }>) => {
+      const o = cleanObject({
+        ...Object.fromEntries(searchParams),
+        ...params,
+      }) as URLSearchParamsInit;
+      return setSearchParam(o);
+    },
   ] as const;
 };

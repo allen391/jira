@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { SearchPanel } from "screens/project-list/search-panel";
 import { List } from "screens/project-list/list";
 import { useDebounce, useDocumentTitle } from "../../utils";
@@ -13,12 +13,10 @@ import { useUrlQueryParams } from "../../utils/url";
 
 export const ProjectListScreen = () => {
   useDocumentTitle("Project List", false);
-  const [, setParam] = useState({
-    name: "",
-    personId: "",
-  });
-  const [keys] = useState<("name" | "personId")[]>(["name", "personId"]);
-  const [param] = useUrlQueryParams(keys);
+
+  // const [keys] = useState<("name" | "personId")[]>(["name", "personId"]);
+  const [param, setParam] = useUrlQueryParams(["name", "personId"]);
+
   const debouncedParam = useDebounce(param, 200);
   const { isLoading, error, data: list } = useProjects(debouncedParam);
 
@@ -34,7 +32,7 @@ export const ProjectListScreen = () => {
     </Container>
   );
 };
-ProjectListScreen.whyDidYouRender = true;
+ProjectListScreen.whyDidYouRender = false;
 
 const Container = styled.div`
   padding: 3.2rem;
