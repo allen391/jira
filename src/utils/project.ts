@@ -7,8 +7,47 @@ import { cleanObject } from "./index";
 export const useProjects = (param?: Partial<Project>) => {
   const client = useHttp();
   const { run, ...result } = useAsync<Project[]>();
+  const fetchProjects = () =>
+    client("projects", { data: cleanObject(param || {}) });
   useEffect(() => {
-    run(client("projects", { data: cleanObject(param || {}) }));
+    run(fetchProjects(), {
+      retry: fetchProjects,
+    });
   }, [param]);
   return result;
+};
+
+export const useEditProject = () => {
+  const { run, ...asyncResults } = useAsync();
+  const client = useHttp();
+  const mutate = (params: Partial<Project>) => {
+    // console.log(params)
+    return run(
+      client(`projects/${params.id}`, {
+        data: params,
+        method: "PATCH",
+      })
+    );
+  };
+  return {
+    mutate,
+    ...asyncResults,
+  };
+};
+
+export const useAddProject = () => {
+  const { run, ...asyncResults } = useAsync();
+  const client = useHttp();
+  const mutate = (params: Partial<Project>) => {
+    return run(
+      client(`projects/${params.id}`, {
+        data: params,
+        method: "POST",
+      })
+    );
+  };
+  return {
+    mutate,
+    ...asyncResults,
+  };
 };

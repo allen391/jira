@@ -30,11 +30,21 @@ export const useAsync = <D>(initialState?: State<D>) => {
       data: null,
       stat: "error",
     });
-
-  const run = (promise: Promise<D>) => {
+  //useState传入函数时，会直接执行，惰性初始化
+  const [retry, setRetry] = useState(() => () => {});
+  //触发异步请求
+  const run = (
+    promise: Promise<D>,
+    runConfig?: { retry: () => Promise<D> }
+  ) => {
     if (!promise || !promise.then) {
       throw new Error("请传入Promise类型数据");
     }
+    setRetry(() => () => {
+      if (runConfig?.retry) {
+        run(runConfig?.retry(), runConfig);
+      }
+    });
     setState({ ...state, stat: "loading" });
     return promise
       .then((data) => {
@@ -47,6 +57,7 @@ export const useAsync = <D>(initialState?: State<D>) => {
         return Promise.reject(error);
       });
   };
+
   return {
     isIdle: state.stat === "idle",
     isLoading: state.stat === "loading",
@@ -55,6 +66,8 @@ export const useAsync = <D>(initialState?: State<D>) => {
     run,
     setData,
     setError,
+    //retry被调用时，重新跑一遍run
+    retry,
     ...state,
   };
 };
