@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 export const isVoid = (value: unknown) => value === undefined || value === "";
@@ -48,4 +48,19 @@ export const useDocumentTitle = (title: string, keepOnUnmount = true) => {
       }
     };
   }, [keepOnUnmount, oldTitle]);
+};
+
+/*
+ * 返回组件挂载状态，如果还没有挂载或者卸载返回false，反之，返回true
+ * */
+
+export const useMountedRef = () => {
+  const mountedRef = useRef(false);
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  });
+  return mountedRef;
 };
